@@ -1,4 +1,5 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 
 const symptomAdvice = {
   'Fever': "Rest, stay hydrated, and take over-the-counter fever reducers. If fever persists or is high, consult a doctor.",
@@ -15,19 +16,20 @@ const symptomAdvice = {
 
 router.post('/', (req, res) => {
   const { symptoms } = req.body;
-  
+
   let advice = [];
   symptoms.forEach(symptom => {
     if (symptomAdvice[symptom]) {
       advice.push(`${symptom}: ${symptomAdvice[symptom]}`);
     }
   });
-  
+
   if (advice.length === 0) {
     advice.push("Based on the symptoms provided, we recommend consulting with a healthcare professional for a proper diagnosis.");
   }
-  
-  res.json({ result: advice.join("\n\n") });
+
+  // Send the result as an array of strings
+  res.json({ result: advice });
 });
 
 module.exports = router;
