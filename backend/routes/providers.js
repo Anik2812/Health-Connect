@@ -1,12 +1,20 @@
 const router = require('express').Router();
-let Provider = require('../models/provider.model');
+const Provider = require('../models/provider.model');
 
+// Get all providers
 router.route('/').get((req, res) => {
   Provider.find()
-    .then(providers => res.json(providers))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .then(providers => {
+      console.log('Fetched providers:', providers);  // Detailed log
+      res.json(providers);
+    })
+    .catch(err => {
+      console.error('Error fetching providers:', err);  // Detailed error log
+      res.status(400).json('Error: ' + err);
+    });
 });
 
+// Add a new provider
 router.route('/add').post((req, res) => {
   const { name, specialty, address, phone } = req.body;
 
